@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>?</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    /* overflow hidden diganti auto agar di mobile bisa scroll jika perlu */
+    overflow-x: hidden;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    height: 100vh;
+    text-align: center;
+    background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+    background-size: 800% 800%;
+    animation: gradientBG 30s ease infinite;
+    color: white;
+    user-select: none;
+  }
+
+  @keyframes gradientBG {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+  }
+
+  #intro {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #ff9a9e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    z-index: 20;
+    animation: introSlideUp 2s ease-in-out 3s forwards;
+  }
+
+  @keyframes introSlideUp {
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  #mainContent {
+    display: none;
+    height: 100vh;
+    padding-top: 80px;
+    position: relative;
+    overflow-x: hidden;
+    text-shadow: 2px 2px #ff6f91;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  #mainContent > * {
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  #mainContent.active > * {
+    opacity: 1;
+  }
+
+  #mainContent.active h1 {
+    transition-delay: 0.2s;
+  }
+
+  #mainContent.active #romanceText {
+    transition-delay: 1s;
+  }
+
+  #mainContent.active #startBtn {
+    transition-delay: 1.8s;
+  }
+
+  #mainContent.active #audioControl {
+    transition-delay: 2.5s;
+  }
+
+  #mainContent.active #nameForm {
+    transition-delay: 3.2s;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5em;
+  }
+
+  #romanceText {
+    margin: 20px auto;
+    font-size: 1.3rem;
+    max-width: 100%;
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 15px 12px;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    white-space: pre-line; /* untuk handle newline */
+    user-select: text;
+  }
+
+  button {
+    padding: 15px 30px;
+    background-color: #ff6f91;
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    margin-top: 10px;
+    user-select: none;
+    transition: transform 0.2s;
+    touch-action: manipulation;
+  }
+
+  button:hover, button:focus {
+    transform: scale(1.1);
+    outline: none;
+  }
+
+  .heart {
+    position: fixed;
+    top: -50px;
+    color: red;
+    font-size: 2rem;
+    animation: jatuh 5s linear forwards;
+    user-select: none;
+    pointer-events: none;
+    opacity: 1;
+    will-change: transform, opacity;
+  }
+
+  @keyframes jatuh {
+    0% {
+      top: -50px;
+      opacity: 1;
+    }
+    100% {
+      top: 110vh;
+      opacity: 0;
+    }
+  }
+
+  #audioControl {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+    user-select: none;
+    z-index: 100;
+    color: #ff6f91;
+    touch-action: manipulation;
+  }
+
+  /* Confetti Heart */
+  .confetti-heart {
+    position: fixed;
+    width: 15px;
+    height: 15px;
+    color: #ff385c;
+    font-size: 1.2rem;
+    user-select: none;
+    pointer-events: none;
+    animation: confettiFall 2.5s ease forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes confettiFall {
+    0% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(150vh) rotate(360deg);
+    }
+  }
+
+  /* Cupido */
+  #cupido {
+    position: fixed;
+    top: 10%;
+    left: -10%;
+    font-size: 3rem;
+    animation: cupidoFly 15s linear infinite;
+    pointer-events: none;
+    user-select: none;
+    color: #ff4d6d;
+    z-index: 50;
+  }
+
+  @keyframes cupidoFly {
+    0% { left: -10%; top: 10%; }
+    25% { left: 30%; top: 15%; }
+    50% { left: 60%; top: 10%; }
+    75% { left: 90%; top: 20%; }
+    100% { left: 110%; top: 10%; }
+  }
+
+  /* Form input */
+  #nameForm {
+    margin-top: 30px;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
+
+  #nameForm input {
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 15px;
+    border: none;
+    outline: none;
+    width: 100%;
+    max-width: 260px;
+  }
+
+  #nameForm button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #ff6f91;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    touch-action: manipulation;
+  }
+
+  #nameForm button:hover, #nameForm button:focus {
+    background-color: #ff4d6d;
+    outline: none;
+  }
+
+  #timer {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffda77;
+    text-shadow: 1px 1px #804000;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2rem;
+    }
+    #romanceText {
+      font-size: 1.1rem;
+      min-height: 60px;
+      padding: 12px;
+    }
+    button {
+      font-size: 1rem;
+      padding: 12px 25px;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <!-- Intro -->
+  <div id="intro">💖 Selamat Datang 💖</div>
+
+  <!-- Main Content -->
+  <div id="mainContent">
+    <h1>🩷 Web Bucin Spesial Buat Kamu 🩷</h1>
+    <div id="romanceText" title="Klik buat copy kata romantis">Klik tombol di bawah buat dapetin kejutan 😚</div>
+    <button id="startBtn" onclick="mulaiRomantis()">Klik Aku!</button>
+    <button id="audioControl" onclick="toggleAudio()">🔊 Musik</button>
+
+    <form id="nameForm" onsubmit="return setName(event)">
+      <input type="text" id="pasanganName" placeholder="Nama pasangan kamu" autocomplete="off" />
+      <button type="submit">Set Nama</button>
+    </form>
+
+    <div id="timer">Kejutan spesial setiap 1 menit! ⏳</div>
+  </div>
+
+  <!-- Cupido animation -->
+  <div id="cupido">🏹</div>
+
+  <!-- Audio -->
+  <audio id="bgm" loop preload="auto" crossorigin="anonymous">
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mp3" />
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <!-- Suara klik lucu -->
+  <audio id="clickSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg" preload="auto"></audio>
+
+  <script>
+    // Intro handling
+    setTimeout(() => {
+      const intro = document.getElementById("intro");
+      intro.style.display = "none";
+      const main = document.getElementById("mainContent");
+      main.style.display = "block";
+      setTimeout(() => main.classList.add("active"), 100);
+    }, 3500);
+
+    // Kata romantis sample
+    const kataRomantis = [
+      "Kamu bagaikan pelangi yang datang setelah hujan.",
+      "Setiap detik bersamamu adalah anugerah terindah.",
+      "Hatiku berdebar setiap kali namamu terucap.",
+      "Kasih sayangmu menghangatkan jiwa yang dingin.",
+      "Aku cinta kamu, lebih dari kata yang bisa diucapkan.",
+      "Bersamamu, dunia ini penuh warna dan makna.",
+      "Jangan pernah ragu, aku selalu ada di sini untukmu.",
+      "Cintaku seperti bintang yang selalu bersinar di malam gelap.",
+      "Denganmu, hidupku sempurna dan penuh harapan.",
+      "Kamu adalah alasan aku tersenyum setiap hari."
+    ];
+
+    // Default pasangan
+    let pasangan = "Sayangku";
+
+    // Untuk interval update kata romantis
+    let intervalRomantis;
+
+    // Mulai tampilkan kata romantis
+    function mulaiRomantis() {
+      playClickSound();
+      updateRomantis();
+      // interval update setiap 1 menit (60000 ms)
+      clearInterval(intervalRomantis);
+      intervalRomantis = setInterval(updateRomantis, 60000);
+      document.getElementById("startBtn").disabled = true;
+      document.getElementById("startBtn").textContent = "Sedang Berjalan...";
+    }
+
+    function updateRomantis() {
+      // Random pilih kata romantis
+      let idx = Math.floor(Math.random() * kataRomantis.length);
+      let text = kataRomantis[idx];
+      // Ganti kata pasangan jika ada variabel
+      text = text.replace(/\bsayangku\b/gi, pasangan);
+      const romText = document.getElementById("romanceText");
+      romText.textContent = text;
+      // Bikin efek confetti hati
+      buatConfettiHati();
+    }
+
+    // Copy teks romantis saat klik
+    document.getElementById("romanceText").addEventListener("click", () => {
+      const teks = document.getElementById("romanceText").textContent;
+      navigator.clipboard.writeText(teks).then(() => {
+        alert("Teks romantis berhasil disalin! 💌");
+        playClickSound();
+      }).catch(() => {
+        alert("Gagal menyalin teks :(");
+      });
+    });
+
+    // Audio control
+    const bgm = document.getElementById("bgm");
+    let audioOn = false;
+
+    function toggleAudio() {
+      playClickSound();
+      if (!audioOn) {
+        bgm.play().catch(() => {
+          alert("Klik tombol mulai atau teks agar musik bisa diputar di browser ini.");
+        });
+        audioOn = true;
+        document.getElementById("audioControl").textContent = "🔇 Matiin Musik";
+      } else {
+        bgm.pause();
+        audioOn = false;
+        document.getElementById("audioControl").textContent = "🔊 Musik";
+      }
+    }
+
+    // Set nama pasangan
+    function setName(event) {
+      event.preventDefault();
+      const input = document.getElementById("pasanganName");
+      if (input.value.trim() === "") {
+        alert("Tolong isi nama pasangan dulu ya!");
+        input.focus();
+        return false;
+      }
+      pasangan = input.value.trim();
+      alert("Nama pasangan sudah diset jadi: " + pasangan);
+      input.value = "";
+      playClickSound();
+      updateRomantis();
+      return false;
+    }
+
+    // Buat confetti hati jatuh
+    function buatConfettiHati() {
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement("div");
+        heart.classList.add("confetti-heart");
+        heart.textContent = "❤️";
+        heart.style.left = (Math.random() * window.innerWidth) + "px";
+        heart.style.top = "-20px";
+        heart.style.animationDuration = (1.5 + Math.random() * 1) + "s";
+        heart.style.fontSize = (10 + Math.random() * 15) + "px";
+        heart.style.opacity = 1;
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 2500);
+      }
+    }
+
+    // Main jatuh hati random
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "❤️";
+      heart.style.left = (Math.random() * window.innerWidth) + "px";
+      heart.style.fontSize = (20 + Math.random() * 30) + "px";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }, 800);
+
+    // Suara klik lucu
+    const clickSound = document.getElementById("clickSound");
+    function playClickSound() {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(() => {});
+    }
+
+  </script>
+
+</body>
+</html>
