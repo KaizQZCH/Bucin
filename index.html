@@ -31,24 +31,30 @@
   }
 
   #intro {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #ff9a9e;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2.4rem;
-    z-index: 20;
-    animation: introSlideUp 2s ease-in-out 3s forwards;
-  }
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: #ff9a9e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.4rem;
+  z-index: 20;
+  animation: introSlideUp 2s cubic-bezier(0.4, 0, 0.2, 1) 3s forwards;
+  /* cubic-bezier ini buat easing smooth */
+}
 
-  @keyframes introSlideUp {
-    to {
-      transform: translateY(-100%);
-    }
+@keyframes introSlideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
   }
+  100% {
+    opacity: 0;
+    transform: translateY(-120%);
+  }
+}
 
   #mainContent {
     display: none;
